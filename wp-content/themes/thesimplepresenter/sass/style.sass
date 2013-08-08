@@ -1,0 +1,242 @@
+/*
+ * Theme Name: The Simple Presenter
+ * Author: tony@imgur.com
+ * Description: A simple presenter to help us keep all our case studies in one place and customizable
+ * Version: 0.1
+ */
+
+$black: #121211
+$barelyblack: #181817
+$green: #85BF25
+$fontfamily: "futura_lt_btlight", Arial, sans-serif
+
+/* add mixin for media queries */
+@mixin respond-to($media)
+  @if $media == wide-screens
+    @media only screen and (min-width: 1024px)
+      @content
+
+/* keyframe mixins */
+=keyframes($name)
+  @-webkit-keyframes #{$name}
+    @content
+  @-moz-keyframes #{$name}
+    @content
+  @-ms-keyframes #{$name}
+    @content
+  @keyframes #{$name}
+    @content
+
+@mixin animation($duration, $animation, $easing, $repeat, $direction)
+  -webkit-animation: $animation $duration $easing $repeat $direction
+  -moz-animation: $animation $duration $easing $repeat $direction
+  -ms-animation: $animation $duration $easing $repeat $direction
+  animation: $animation $duration $easing $repeat $direction
+
+@mixin transition($property, $duration, $easing)
+  -webkit-transition: $property $duration $easing
+  -moz-transition: $property $duration $easing
+  -ms-transition: $property $duration $easing
+  transition: $property $duration $easing
+
+
++keyframes(bgpos)
+  from
+    background-position: 0px 0px
+  to
+    background-position: 1000px -1500px
+
+
+/* Helper classes */
+.fixed
+  position: fixed
+
+.hide
+  display: none
+
+.left
+  left: 0
+
+.bottom
+  bottom: 0
+
+.top
+  top: 0
+
+.green
+  color: $green
+
+.green-bg
+  background-color: $green
+
+.btn
+  opacity: .5
+  @include transition(opacity, .15s, linear)
+  display: inline-block
+  
+  span
+    background: url(img/sprite.png) no-repeat
+    background-size: 200px
+    height: 100px
+    width: 75px
+    display: inline-block
+    text-indent: -9999em
+
+  &:hover
+    background-color: #1c5163
+    opacity: 1
+
+  &:active
+    opacity: .5
+
+/* Main styles */
+html
+  background-color: $black
+body
+  background-color: $black
+  font-family: $fontfamily
+  color: #fff
+  overflow-x: hidden
+  overflow-y: auto
+  font-size: 1em
+  line-height: 1.4
+  width: 100%
+  height: 100%
+
+h1, p
+  position: relative
+  z-index: 1
+  top: 35%
+  text-shadow: 1px 1px 0px $black
+
+#slideshow-container
+  margin: 0
+  list-style: none
+  z-index: 0
+  background: $barelyblack
+  width: 100%
+  height: 100%
+  position: fixed
+  overflow: hidden
+  padding: 0
+
+  .slide
+    position: absolute
+    height: 100%
+    width: 100%
+    top: -100%
+    overflow: hidden
+    left: 0
+    border-top: 1px solid $black
+    border-bottom: 1px solid $black
+    opacity: 0
+    @include transition(all, .3s, ease-in-out)
+
+    &:last-child
+      top: 100%
+      
+    &.active
+      top: 0
+      opacity: 1
+      
+      &+ .slide
+        top: 100%
+      
+    &:nth-child(even)
+      background-color: $black
+      border-bottom: 1px solid $barelyblack
+      border-top: 1px solid $barelyblack
+
+    &:after
+      content: ''
+      width: 100%
+      height: 100%
+      top: 0
+      left: 0
+      background-size: cover
+      position: fixed
+      background: rgba(0, 0, 0, 0) url(img/halftone.png) repeat top left
+
+#navigation
+  height: 75px
+  width: 100%
+  z-index: 2
+
+  .overlay
+    opacity: .6
+    width: 100%
+    height: 100%
+    position: absolute
+    background: #000
+
+  #toolbar
+    z-index: 3
+    position: relative
+    margin: 0
+    text-align: center
+    padding: 0
+
+    li
+      display: inline-block
+      padding: 1px 10px 0px
+
+    .prev, .next
+      width: 33px
+      background-position: 0px 10px
+
+    .next
+      background-position: -31px 10px
+
+    .fs
+      background-position: -134px 9px
+
+    .close-fs
+      background-position: -63px 9px
+
+    .number-counter
+      top: 25px
+      position: absolute
+      font-size: 22px
+      opacity: .5
+      z-index: -1
+
+/* front page of slideshow */
+#slide-0
+
+  .imgur-grid
+    background: url(img/grid.jpg) repeat top left
+    background-size: 600px
+    opacity: .15
+    width: 100%
+    height: 100%
+    position: absolute
+
+  &.active
+    .imgur-grid
+      @include animation(55s, bgpos, linear, infinite, alternate)
+
+  h1, p
+    text-align: center
+    top: 50%
+    margin-top: -20%
+  p
+
+    font-size: 3em
+    margin-top: -32.8%
+    margin-left: 53px
+    letter-spacing: 1px
+    
+  img
+    width: 70%
+    @include respond-to(wide-screens)
+      width: 700px
+      
+@font-face
+  font-family: 'futura_lt_btlight'
+  src: url('fonts/futural-webfont-webfont.eot')
+  src: url('fonts/futural-webfont-webfont.eot?#iefix') format('embedded-opentype')
+  src: url('fonts/futural-webfont-webfont.woff') format('woff')
+  src: url('fonts/futural-webfont-webfont.ttf') format('truetype')
+  src: url('fonts/futural-webfont-webfont.svg#futura_lt_btlight') format('svg')
+  font-weight: normal
+  font-style: normal
