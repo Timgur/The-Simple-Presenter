@@ -10,13 +10,15 @@
 
  get_header(); ?>
     <div id="fullscreen">
-		<div id="navigation" class="fixed left bottom">
+		<div id="hoverListener" class="bottom fixed left"></div>
+		<div id="navigation" class="hidden fixed left bottom" ng-class="{hidden : showNavigation == false}">
 			<div class="overlay bottom left"></div>
+			<div id="progress" class="green-bg" style="width:{{(slidePos+1)/SLIDELENGTH*100}}%"></div>
 			<ul id="toolbar">
 				<li class="btn" ng-click="prevSlide()"><span class="prev">prev</span></li>
-				<li class="btn" ng-click="toggleFullScreen(event)"><span class="fs">fullscreen</span></li>
+				<li class="btn" ng-click="toggleFullScreen()"><span class="fs">fullscreen</span></li>
 				<li class="btn" ng-click="nextSlide()"><span class="next">next</span></li>
-				<li class="number-counter">{{slidePos+1}}/{{slides.length+1}}</li>
+				<li class="number-counter"><span contenteditable ng-keydown="enterNumber($event)">{{slidePos+1}}</span>/{{slides.length+1}}</li>
 			</ul>
 		</div>
 		<ul id="slideshow-container">

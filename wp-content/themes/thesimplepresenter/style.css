@@ -38,7 +38,7 @@
   position: fixed; }
 
 .hide {
-  display: none; }
+  display: none !important; }
 
 .left {
   left: 0; }
@@ -141,10 +141,24 @@ h1, p {
       position: fixed;
       background: rgba(0, 0, 0, 0) url(img/halftone.png) repeat top left; }
 
-#navigation {
+#hoverListener {
   height: 75px;
   width: 100%;
-  z-index: 2; }
+  z-index: 1; }
+  #hoverListener:hover + #navigation {
+    bottom: 0px; }
+
+#navigation {
+  height: 75px;
+  bottom: -72px;
+  width: 100%;
+  z-index: 2;
+  -webkit-transition: bottom 0.25s ease-in-out;
+  -moz-transition: bottom 0.25s ease-in-out;
+  -ms-transition: bottom 0.25s ease-in-out;
+  transition: bottom 0.25s ease-in-out; }
+  #navigation:hover {
+    bottom: 0px; }
   #navigation .overlay {
     opacity: 0.6;
     width: 100%;
@@ -159,6 +173,7 @@ h1, p {
     padding: 0; }
     #navigation #toolbar li {
       display: inline-block;
+      position: relative;
       padding: 1px 10px 0px; }
     #navigation #toolbar .prev, #navigation #toolbar .next {
       width: 33px;
@@ -167,14 +182,31 @@ h1, p {
       background-position: -31px 10px; }
     #navigation #toolbar .fs {
       background-position: -134px 9px; }
-    #navigation #toolbar .close-fs {
-      background-position: -63px 9px; }
+      .fullScreen #navigation #toolbar .fs {
+        background-position: -63px 9px; }
     #navigation #toolbar .number-counter {
       top: 25px;
       position: absolute;
       font-size: 22px;
-      opacity: 0.5;
+      opacity: 0.7;
       z-index: -1; }
+      #navigation #toolbar .number-counter span {
+        display: inline-block;
+        border: 1px dashed #cccccc;
+        text-align: right;
+        width: 30px;
+        height: 27px;
+        padding-right: 2px; }
+        #navigation #toolbar .number-counter span:focus {
+          background-color: #1c5163; }
+  #navigation #progress {
+    height: 2px;
+    position: relative;
+    z-index: 100;
+    -webkit-transition: width 0.5s ease-in-out;
+    -moz-transition: width 0.5s ease-in-out;
+    -ms-transition: width 0.5s ease-in-out;
+    transition: width 0.5s ease-in-out; }
 
 /* front page of slideshow */
 #slide-0 .imgur-grid {

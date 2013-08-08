@@ -2,6 +2,10 @@ function SlideListCtrl($scope) {
     $scope.slides = getSlides();
     $scope.orderProp = "slide_number";
     $scope.slidePos = 0;
+    $scope.showNavigation = false;
+    $scope.timer = undefined;
+    // this is to help include a default title slide
+    $scope.SLIDELENGTH = $scope.slides.length + 1;
 
     $scope.nextSlide = function() {
         $scope.goToSlide('next');
@@ -11,26 +15,32 @@ function SlideListCtrl($scope) {
         $scope.goToSlide('prev');
     };
 
+    $scope.enterNumber = function(e) {
+        if (e.keyCode === 13) {
+            e.preventDefault();
+            $scope.goToSlide(parseInt(e.target.innerHTML));
+        }
+        return false;
+    };
+
     $scope.goToSlide = function(action) {
-       if (typeof action === "number") {
-           $scope.slidePos = action;
-           return;
-       }
+        if (typeof action === "number") {
+            if (action != 0 && action <= $scope.SLIDELENGTH) {
+                $scope.slidePos = action-1;
+            }
+            return;
+        }
 
         var newSlidePos = (action === 'next') ? +1 : -1;
         if (($scope.slidePos + newSlidePos) < 0) {
             newSlidePos = $scope.slides.length;
         }
 
-        $scope.slidePos = Math.abs(($scope.slidePos + newSlidePos) % ($scope.slides.length + 1));
+        $scope.slidePos = Math.abs(($scope.slidePos + newSlidePos) % ($scope.SLIDELENGTH));
     };
 
-    $scope.toggleFullScreen = function(e) {
+    $scope.toggleFullScreen = function() {
         $('#fullscreen').fullScreen();
-    };
-
-    $scope.showBottomBar = function() {
-        console.log('hi');
     };
 
     $scope.keyPress = function(e) {

@@ -24,6 +24,18 @@ describe('Slideshow controllers', function() {
             expect(scope.slidePos).toBe(1);
         });
 
+        it('should reset slidePos to zero if number is equal to the slides length', function() {
+            scope.slidePos = 4;
+            scope.nextSlide();
+            expect(scope.slidePos).toBe(0);
+        });
+
+        it('should reset slidePos to last slide if number is equal to zero and previous is hit', function() {
+            scope.slidePos = 0;
+            scope.prevSlide();
+            expect(scope.slidePos).toBe(4);
+        });
+
         it('should decrease slidePos by one when prevSlide is called', function() {
             scope.slidePos = 1;
             scope.prevSlide();
@@ -33,6 +45,40 @@ describe('Slideshow controllers', function() {
         it('should update slidePos to the number passed in if it is a number', function() {
             scope.goToSlide(20);
             expect(scope.slidePos).toBe(20);
+        });
+
+        it('should increase slidePos by one when user keydowns on space bar', function() {
+            var e = {keyCode:32};
+            scope.keyPress(e);
+            expect(scope.slidePos).toBe(1);
+        });
+
+        it('should increase slidePos by one when user keydowns on right arrow', function() {
+            scope.slidePos = 3;
+            var e = {keyCode:39};
+            scope.keyPress(e);
+            expect(scope.slidePos).toBe(4);
+        });
+
+        it('should increase slidePos by one when user keydowns on down arrow', function() {
+            scope.slidePos = 3;
+            var e = {keyCode:40};
+            scope.keyPress(e);
+            expect(scope.slidePos).toBe(4);
+        });
+
+        it('should decrease slidePos by one when user keydowns on left arrow', function() {
+            scope.slidePos = 2;
+            var e = {keyCode:37};
+            scope.keyPress(e);
+            expect(scope.slidePos).toBe(1);
+        });
+
+        it('should decrease slidePos by one when user keydowns on up arrow', function() {
+            scope.slidePos = 3;
+            var e = {keyCode:38};
+            scope.keyPress(e);
+            expect(scope.slidePos).toBe(2);
         });
     });
 });

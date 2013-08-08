@@ -9,6 +9,7 @@ $black: #121211
 $barelyblack: #181817
 $green: #85BF25
 $fontfamily: "futura_lt_btlight", Arial, sans-serif
+$buttonblue: #1c5163
 
 /* add mixin for media queries */
 @mixin respond-to($media)
@@ -52,7 +53,7 @@ $fontfamily: "futura_lt_btlight", Arial, sans-serif
   position: fixed
 
 .hide
-  display: none
+  display: none !important
 
 .left
   left: 0
@@ -83,7 +84,7 @@ $fontfamily: "futura_lt_btlight", Arial, sans-serif
     text-indent: -9999em
 
   &:hover
-    background-color: #1c5163
+    background-color: $buttonblue
     opacity: 1
 
   &:active
@@ -157,10 +158,23 @@ h1, p
       position: fixed
       background: rgba(0, 0, 0, 0) url(img/halftone.png) repeat top left
 
-#navigation
+#hoverListener
   height: 75px
   width: 100%
+  z-index: 1
+
+  &:hover + #navigation
+    bottom: 0px
+    
+#navigation
+  height: 75px
+  bottom: -72px
+  width: 100%
   z-index: 2
+  @include transition(bottom, .25s, ease-in-out)
+
+  &:hover
+    bottom: 0px
 
   .overlay
     opacity: .6
@@ -178,6 +192,7 @@ h1, p
 
     li
       display: inline-block
+      position: relative
       padding: 1px 10px 0px
 
     .prev, .next
@@ -190,15 +205,32 @@ h1, p
     .fs
       background-position: -134px 9px
 
-    .close-fs
-      background-position: -63px 9px
+      .fullScreen &
+        background-position: -63px 9px
 
     .number-counter
       top: 25px
       position: absolute
       font-size: 22px
-      opacity: .5
+      opacity: .7
       z-index: -1
+
+      span
+        display: inline-block
+        border: 1px dashed #CCC
+        text-align: right
+        width: 30px
+        height: 27px
+        padding-right: 2px
+
+        &:focus
+          background-color: $buttonblue
+
+  #progress
+    height: 2px
+    position: relative
+    z-index: 100
+    @include transition(width, .5s, ease-in-out)
 
 /* front page of slideshow */
 #slide-0
