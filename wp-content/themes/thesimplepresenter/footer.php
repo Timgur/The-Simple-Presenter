@@ -39,18 +39,24 @@
 			foreach ($myposts as $key => $post) : setup_postdata( $post );
 			$slidenum = types_render_field("slide-number", array("raw"=>true));
 			$template = types_render_field("template-type", array("value"=>true));
-			$imageLinks = array(types_render_field("image-links", array("url"=>true, "separator"=>"|")));
+			$imageLinks = explode("|",types_render_field("image-links", array("url"=>true, "separator"=>"|")));
 
-			$imageURL = types_render_field("image-url", array("value"=>true));
+			$imageURL = types_render_field("image-url", array("url"=>true));
 			$cat = get_the_category($post->ID);
 		?>
 			{
-			  "title": <?php echo json_encode( $post->post_title ); ?>,
-			  "content": <?php echo json_encode( $post->post_content ); ?>,
-			  "category": <?php echo json_encode( $cat[0]->cat_name ); ?>,
-			  "image_links": <?php echo json_encode( ($imageLinks ? $imageLinks : $imageURL) )  ?>,
-			  "slide_number": <?php echo $slidenum; ?>,
-			  "template": <?php echo json_encode( $template ); ?>
+				"title": <?php echo json_encode( $post->post_title ); ?>,
+				<?php if($post->post_content != "") : ?>
+				"content": <?php echo json_encode( $post->post_content ); ?>,
+				<?php endif; ?>
+				"category": <?php echo json_encode( $cat[0]->cat_name ); ?>,
+				<?php if($imageLinks[0] != "") : ?>
+				"image_links": <?php echo json_encode($imageLinks)  ?>,
+				<?php elseif(!empty($imageURL)): ?>
+				"image_link": <?php echo json_encode($imageURL)  ?>,
+				<?php endif; ?>
+				"slide_number": <?php echo $slidenum; ?>,
+				"template": <?php echo json_encode( $template ); ?>
 			},
 		<?php endforeach; ?>
 	    ]

@@ -18,7 +18,7 @@
 				<li class="btn" ng-click="prevSlide()"><span class="prev">prev</span></li>
 				<li class="btn" ng-click="toggleFullScreen()"><span class="fs">fullscreen</span></li>
 				<li class="btn" ng-click="nextSlide()"><span class="next">next</span></li>
-				<li class="number-counter"><span contenteditable ng-keydown="enterNumber($event)">{{slidePos+1}}</span>/{{slides.length+1}}</li>
+				<li class="number-counter"><span contenteditable ng-bind="slidePos+1" ng-keydown="enterNumber($event)"></span>/{{slides.length+1}}</li>
 			</ul>
 		</div>
 		<ul id="slideshow-container">
@@ -32,9 +32,7 @@
 					<div ng-switch-when="Text"></div>
 					<div ng-switch-when="Image"></div>
 					<div ng-switch-when="Data"></div>
-					<div ng-switch-when="Background Gallery">
-						
-					</div>
+					<div ng-switch-when="Background Gallery"></div>
 				</div>
 			</li>
 		</ul>
