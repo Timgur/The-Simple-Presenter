@@ -2,8 +2,6 @@ function SlideListCtrl($scope) {
     $scope.slides = getSlides();
     $scope.orderProp = "slide_number";
     $scope.slidePos = 0;
-    $scope.showNavigation = false;
-    $scope.timer = undefined;
     // this is to help include a default title slide
     $scope.SLIDELENGTH = $scope.slides.length + 1;
 

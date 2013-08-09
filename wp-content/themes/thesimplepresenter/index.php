@@ -29,10 +29,12 @@
 			<li id="slide-{{$index+1}}" class="slide" ng-class="{active : slidePos == $index+1, topTransition : lastPos == $index+1}" ng-repeat="slide in slides | orderBy:orderProp" data-slideNumber="{{$index+1}}">
 				<h1>{{slide.title}}</h1>
 				<div ng-switch on='slide.template'>
-					<div ng-switch-when="Text">text</div>
-					<div ng-switch-when="Image">image</div>
-					<div ng-switch-when="Data">data</div>
-					<div ng-switch-when="Background Gallery">bg</div>
+					<div ng-switch-when="Text"></div>
+					<div ng-switch-when="Image"></div>
+					<div ng-switch-when="Data"></div>
+					<div ng-switch-when="Background Gallery">
+						
+					</div>
 				</div>
 			</li>
 		</ul>
