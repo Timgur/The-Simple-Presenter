@@ -15,51 +15,53 @@
 <script src="<?php echo get_template_directory_uri(); ?>/js/lib/TweenMax.min.js" type="text/javascript"></script>
 <script src="<?php echo get_template_directory_uri(); ?>/js/lib/jquery.gsap.min.js" type="text/javascript"></script>
 <script type="text/javascript">
-	var getSlides = function() {
-        return [
-		<?php
+    var getSlides = function() {
+    	return <?php
 			$args = array(
 				'posts_per_page'   => 1000,
 				'offset'           => 0,
-				'tag'              => $wp->query_vars[tag],
+				'tag'              => $wp->query_vars['tag'],
 				'orderby'          => 'post_date',
 				'order'            => 'DESC',
-				'include'          => '',
-				'exclude'          => '',
-				'meta_key'         => '',
-				'meta_value'       => '',
 				'post_type'        => 'post',
-				'post_mime_type'   => '',
-				'post_parent'      => '',
 				'post_status'      => 'publish',
 				'suppress_filters' => true );
 			global $post;
+
 			$myposts = get_posts( $args );
+			$slides = array();
 
-			foreach ($myposts as $key => $post) : setup_postdata( $post );
-			$slidenum = types_render_field("slide-number", array("raw"=>true));
-			$template = types_render_field("template-type", array("value"=>true));
-			$imageLinks = explode("|",types_render_field("image-links", array("url"=>true, "separator"=>"|")));
+			foreach ($myposts as $key => $post) {
+				setup_postdata( $post );
+				$slidenum = types_render_field("slide-number", array("raw"=>true));
+				$template = types_render_field("template-type", array("value"=>true));
+				$imageLinks = explode("|",types_render_field("image-links", array("url"=>true, "separator"=>"|")));
 
-			$imageURL = types_render_field("image-url", array("url"=>true));
-			$cat = get_the_category($post->ID);
+				$imageUrls = ($imageLinks[0] == "") ? types_render_field("image-url", array("url"=>true)) : $imageLinks;
+				$cat = get_the_category($post->ID);
+				$slides[] = array(
+					'title'=> $post->post_title,
+					'content'=> $post->post_content,
+					'category'=> $cat[0]->cat_name,
+					'image_links'=> $imageUrls,
+					'slide_number'=> $slidenum,
+					'template'=> $template
+				);
+			}
+
+            $content = json_encode($slides);
+			echo $content;
+
+			if(current_user_can('edit_post')) {
+				$isZip = $_SERVER['QUERY_STRING'] == 'zip';
+
+				if($isZip) {
+					$fjson = fopen('wp-content/themes/thesimplepresenter/slides.json', 'w');
+					fwrite($fjson, $content);
+					fclose($fjson);
+				}
+			}
 		?>
-			{
-				"title": <?php echo json_encode( $post->post_title ); ?>,
-				<?php if($post->post_content != "") : ?>
-				"content": <?php echo json_encode( $post->post_content ); ?>,
-				<?php endif; ?>
-				"category": <?php echo json_encode( $cat[0]->cat_name ); ?>,
-				<?php if($imageLinks[0] != "") : ?>
-				"image_links": <?php echo json_encode($imageLinks)  ?>,
-				<?php elseif(!empty($imageURL)): ?>
-				"image_link": <?php echo json_encode($imageURL)  ?>,
-				<?php endif; ?>
-				"slide_number": <?php echo $slidenum; ?>,
-				"template": <?php echo json_encode( $template ); ?>
-			},
-		<?php endforeach; ?>
-	    ]
 	};
 </script>
 <script src="<?php echo get_template_directory_uri(); ?>/js/controllers/SlideListCtrl.js" type="text/javascript"></script>
