@@ -17,10 +17,11 @@
 <script type="text/javascript">
     var getSlides = function() {
     	return <?php
+	        $tag = $wp->query_vars['tag'];
 			$args = array(
 				'posts_per_page'   => 1000,
 				'offset'           => 0,
-				'tag'              => $wp->query_vars['tag'],
+				'tag'              => $tag,
 				'orderby'          => 'post_date',
 				'order'            => 'DESC',
 				'post_type'        => 'post',
@@ -56,9 +57,12 @@
 				$isZip = $_SERVER['QUERY_STRING'] == 'zip';
 
 				if($isZip) {
+					require_once 'zip.php';
 					$fjson = fopen('wp-content/themes/thesimplepresenter/slides.json', 'w');
 					fwrite($fjson, $content);
 					fclose($fjson);
+
+					$zip = new Zip($tag);
 				}
 			}
 		?>

@@ -1,13 +1,21 @@
 <?php
     class Zip
 	{
-		private $_file = 'http://localhost:8888/tag/AKQA';
-		private $_index = 'index.html';
+		public $file_dir    = '/wp-content/themes/thesimplepresenter/';
+		public $live_file   = 'http://localhost:8888/tag/';
+		public $index       = 'index.html';
+		public $jsonFile    = 'slides.json';
+		public $current_tag;
+
+		public function __construct($tag)
+		{
+            $this->current_tag = $tag;
+		}
 
 		public function setup_folder()
 	    {
 			$this->create_index();
-			$this->create_zip(array($this->_index), 'AKQA.zip', true);
+			$this->create_zip(array($this->_index), $this->current_tag . '.zip', true);
 		}
 
 		private function create_zip($files = array(), $destination = '', $overwrite = false)
@@ -53,13 +61,10 @@
 		private function create_index()
 		{
 			$content = file_get_contents($this->_file);
-			$makeIndex = fopen($this->_index, 'w') or die('Cannot open file: '. $this->_index);
-			file_put_contents($this->_index, $content, LOCK_EX);
+			$makeIndex = fopen($this->fileDir . $this->_index, 'w') or die('Cannot open file: '. $this->_index);
+			file_put_contents($makeIndex, $content, LOCK_EX);
 			fclose($makeIndex);
 		}
 
 	}
-	
-	$zip = new Zip();
-    $zip->setup_folder();
 ?>
