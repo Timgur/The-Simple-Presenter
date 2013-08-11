@@ -254,12 +254,14 @@ class WP_Terms_List_Table extends WP_List_Table {
 
 		$actions = array();
 		if ( current_user_can( $tax->cap->edit_terms ) ) {
-			$actions['inline export'] = '<a href="#" class="export-link">' . __( 'Export Slideshow' ) . '</a>';
+			$actions['export'] = '<a href="' . get_term_link( $tag ) . '?zip">' . __( 'Export Slideshow' ) . '</a>';
 			$actions['edit'] = '<a href="' . $edit_link . '">' . __( 'Edit' ) . '</a>';
 			/*$actions['inline hide-if-no-js'] = '<a href="#" class="editinline">' . __( 'Quick&nbsp;Edit' ) . '</a>';*/
 		}
-		if ( current_user_can( $tax->cap->delete_terms ) && $tag->term_id != $default_term )
-			$actions['delete'] = "<a class='delete-tag' href='" . wp_nonce_url( "edit-tags.php?action=delete&amp;taxonomy=$taxonomy&amp;tag_ID=$tag->term_id", 'delete-tag_' . $tag->term_id ) . "'>" . __( 'Delete' ) . "</a>";
+
+		//commented out because I don't want to make it easy to delete on the marketing side
+		//if ( current_user_can( $tax->cap->delete_terms ) && $tag->term_id != $default_term )
+			//$actions['delete'] = "<a class='delete-tag' href='" . wp_nonce_url( "edit-tags.php?action=delete&amp;taxonomy=$taxonomy&amp;tag_ID=$tag->term_id", 'delete-tag_' . $tag->term_id ) . "'>" . __( 'Delete' ) . "</a>";
 		$actions['view'] = '<a href="' . get_term_link( $tag ) . '">' . __( 'View' ) . '</a>';
 
 		$actions = apply_filters( 'tag_row_actions', $actions, $tag );

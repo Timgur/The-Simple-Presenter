@@ -5,7 +5,7 @@
  */
 ?>
 
-<?php wp_footer(); ?>
+<?php if(current_user_can('edit_post')) { wp_footer(); } ?>
 <?php // Loads HTML5 JavaScript file to add support for HTML5 elements in older IE versions. ?>
 <!--[if lt IE 9]>
 <script src="<?php echo get_template_directory_uri(); ?>/js/lib/html5.js" type="text/javascript"></script>
@@ -61,7 +61,6 @@
 					$fjson = fopen('wp-content/themes/thesimplepresenter/slides.json', 'w');
 					fwrite($fjson, $content);
 					fclose($fjson);
-
 					$zip = new Zip($tag);
 				}
 			}
