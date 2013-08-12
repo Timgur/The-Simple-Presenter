@@ -62,6 +62,7 @@
 					fwrite($fjson, $content);
 					fclose($fjson);
 					$zip = new Zip($tag);
+					$zip->setup_folder();
 				}
 			}
 		?>

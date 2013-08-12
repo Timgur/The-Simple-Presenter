@@ -1,18 +1,22 @@
 <?php
-    class Zip
+	class Zip
 	{
 		public $file_dir    = 'wp-content/themes/thesimplepresenter';
-		public $live_file   = 'http://localhost:8888/pitch';
-		public $index       = 'index.html';
 		public $image_array = array();
 		public $current_tag;
+		public $live_file;
 
 		private $_json_file  = 'slides.json';
 		private $_zipA;
 
 		public function __construct($tag)
 		{
-            $this->current_tag = $tag;
+			$this->live_file = 'http://' . $_SERVER['HTTP_HOST'] . '/pitch';
+			$this->current_tag = $tag;
+		}
+
+		public function setup_folder()
+		{
 			$this->create_index();
 			$this->update_images();
 			$this->create_zip($this->current_tag . '.zip', true);
@@ -46,6 +50,25 @@
 			$this->add_file($this->image_array, $this->current_tag . '/img/uploads');
 
 			$this->_zipA->close();
+			//$this->read_file($destination);
+		}
+
+		public function read_file($file)
+		{
+			if (file_exists($file)) {
+				header('Content-Description: File Transfer');
+				header('Content-Type: application/octet-stream');
+				header('Content-Disposition: attachment; filename='.basename($file));
+				header('Content-Transfer-Encoding: binary');
+				header('Expires: 0');
+				header('Cache-Control: must-revalidate');
+				header('Pragma: public');
+				header('Content-Length: ' . filesize($file));
+				ob_clean();
+				flush();
+				readfile($file);
+				exit;
+			}
 		}
 
 		private function add_file($src, $dest)
@@ -80,7 +103,7 @@
 		{
 			$content = file_get_contents($this->live_file . '/' . $this->current_tag);
 		    $replacedContent = str_replace('http://' . $_SERVER['HTTP_HOST'] . '/wp-content/themes/thesimplepresenter/', '', $content);
-			$makeIndex = fopen($this->file_dir . '/' . $this->index, 'w') or die('Cannot open file: '. $this->file_dir . '/' . $this->index);
+			$makeIndex = fopen($this->file_dir . '/index.html', 'w') or die('Cannot open file: '. $this->file_dir . '/index.html');
 			fwrite($makeIndex, $replacedContent);
 			fclose($makeIndex);
 		}
